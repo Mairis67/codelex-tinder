@@ -12,7 +12,7 @@
 
                     <p>Name: {{ Auth::user()->profile->name }} {{ Auth::user()->profile->surname }}</p>
                     <p>Age: {{ Auth::user()->profile->age }}</p>
-                    <p>Gender: {{ Auth::user()->profile->gender }}</p>
+                    <p>Gender: {{ ucfirst(Auth::user()->profile->gender) }}</p>
                     <p>Description: {{ Auth::user()->profile->description }}</p>
                     <p>Email: {{ Auth::user()->email }}</p>
                     @if(Auth::user()->settings->search_male === '1' && Auth::user()->settings->search_female === '1')
@@ -22,6 +22,11 @@
                     @elseif(Auth::user()->settings->search_male === '0')
                         <h3>Looking For: Female</h3>
                     @endif
+
+{{--                    <img src="/storage/public/pictures/{{ Auth::user()->pictures->path }}">--}}
+
+{{--                    <img src="{{ asset('public/images/' . Auth::user()->pictures->path) }}">--}}
+
                     <div class="mt-4">
                         <a class="underline" href="{{ route('upload') }}">Upload Picture</a>
                     </div>

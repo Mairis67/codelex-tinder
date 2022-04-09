@@ -26,13 +26,4 @@ class UserProfile extends Model
         return $this->belongsTo(User::class);
     }
 
-//    public function getPicture()
-//    {
-//        if($this->profile_picture == null)
-//        {
-//            return Storage::url('/picture/default.png');
-//        }
-//
-//        return Storage::url($this->profile_picture);
-//    }
 }

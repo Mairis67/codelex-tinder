@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Picture;
+use App\Models\UserPicture;
 use Illuminate\Http\Request;
 
 class PictureController extends Controller
@@ -16,15 +17,24 @@ class PictureController extends Controller
     {
         $user = auth()->user();
 
-        $path = $request->file('picture')->getClientOriginalName();
+        if ($request->hasFile('picture')) {
 
-        $request->file('picture')->store('pictures', 'public');
+            $request->validate([
+                'picture' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg']
+            ]);
 
-        Picture::create([
-           'user_id' => $user->id,
-           'path' => $path
-        ]);
+            $request->file('picture')->store('pictures', 'public');
 
-        return redirect()->back();
+            $path = $request->file('picture')->hashName();
+
+            $picture = new UserPicture([
+                'user_id' => $user->id,
+                "path" => $path
+            ]);
+            $picture->save();
+        }
+
+
+        return redirect('/profile');
     }
 }
