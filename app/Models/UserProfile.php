@@ -21,7 +21,7 @@ class UserProfile extends Model
 
     protected $table = 'user_profiles';
 
-    public function user()
+    public function profile()
     {
         return $this->belongsTo(User::class);
     }

@@ -17,7 +17,7 @@ class UserSettings extends Model
 
     protected $table = 'user_settings';
 
-    public function user()
+    public function settings()
     {
         return $this->belongsTo(User::class);
     }
