@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class UserPicture extends Model
 {
@@ -19,5 +20,10 @@ class UserPicture extends Model
     public function pictures()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getPicture()
+    {
+        return Storage::url($this->path);
     }
 }

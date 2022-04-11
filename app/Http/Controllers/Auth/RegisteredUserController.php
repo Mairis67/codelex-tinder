@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
+use App\Models\UserPicture;
 use App\Models\UserProfile;
 use App\Models\UserSettings;
 use App\Providers\RouteServiceProvider;
@@ -18,7 +19,6 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-
     public function create(): View
     {
         return view('auth.register');
@@ -36,7 +36,8 @@ class RegisteredUserController extends Controller
             'gender' => ['required'],
             'description' => ['required', 'min:10', 'max:255'],
             'search_male' => ['required_unless:search_female,1'],
-            'search_female' => ['required_unless:search_male,1']
+            'search_female' => ['required_unless:search_male,1'],
+            'picture' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg']
         ]);
 
         $user = User::create([
@@ -61,6 +62,18 @@ class RegisteredUserController extends Controller
             'search_male' => $searchMale,
             'search_female' => $searchFemale
         ]);
+
+        if ($request->hasFile('picture')) {
+
+            $request->file('picture')->store('pictures', 'public');
+
+            $path = $request->file('picture')->hashName();
+
+            UserPicture::create([
+                'user_id' => $user->id,
+                "path" => $path
+            ]);
+        }
 
         event(new Registered($user));
 

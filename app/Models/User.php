@@ -50,11 +50,49 @@ class User extends Authenticatable
 
     public function settings()
     {
-        return$this->hasOne(UserSettings::class);
+        return $this->hasOne(UserSettings::class);
     }
 
     public function picture()
     {
         return $this->hasMany(UserPicture::class);
     }
+
+    public function userLiked()
+    {
+        return $this->belongsToMany(User::class, 'matches',
+            'user_two', 'auth_user');
+    }
+
+    public function likedUser()
+    {
+        return $this->belongsToMany(User::class, 'matches',
+            'auth_user', 'user_two');
+    }
+
+    public function dislikes()
+    {
+        return $this->belongsToMany(User::class, 'dislikes',
+            'user_two', 'auth)_user');
+    }
+
+    public function match(User $otherUser)
+    {
+        $userMatched = $this->belongsToMany(User::class, 'matches',
+            'auth_user', 'user_two')
+            ->where('auth_user', '=', $this->id)
+            ->where('user_two', '=', $otherUser->id)->getResults();
+
+        $matchedUser = $this->belongsToMany(User::class, 'matches',
+            'user_two', 'auth_user')
+            ->where('auth_two', '=', $this->id)
+            ->where('auth_user', '=', $otherUser->id)->getResults();
+
+        if (isset($userMatched[0]->attributes['id']) && isset($matchedUser[0]->attributes['id'])) {
+            return $otherUser;
+        } else {
+            return null;
+        }
+    }
+
 }
