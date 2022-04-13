@@ -7,20 +7,19 @@ use App\Models\UserSettings;
 
 class GenerateRandomUser
 {
-    public function getUser(UserSettings $userSettings): ?User
+    public function getUser($user, UserSettings $userSettings): ?User
     {
         if ($userSettings->search_male == 1) {
-            return User::all()->random();
-//                ->searchWithSettings(
-//                    'male',
-//                    $userSettings->user_id
-//                );
+            return User::inRandomOrder()
+                ->filterSettings('male', $userSettings->user_id)
+                ->filterNotSelected($user->id)
+                ->first();
+
         } elseif ($userSettings->search_female == 1) {
-            return User::all()->random();
-//                ->searchWithSettings(
-//                    'female',
-//                    $userSettings->user_id
-//                );
+            return User::inRandomOrder()
+                ->filterSettings('female', $userSettings->user_id)
+                ->filterNotSelected($user->id)
+                ->first();
         } else {
             return null;
         }

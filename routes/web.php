@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeOrDislikeController;
+use App\Http\Controllers\MatchesController;
 use App\Http\Controllers\PictureController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/home', [HomeController::class, 'index']);
+
+Route::get('/matches', [MatchesController::class, 'index'])->name('matches');
 
 Route::get('/profile', [ProfileController::class, 'index']);
 

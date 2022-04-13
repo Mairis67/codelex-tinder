@@ -14,13 +14,9 @@ class UserPictureFactory extends Factory
      */
     public function definition()
     {
-        $image = $this->faker->image(400,400);
-        $imageName = explode('/',$image);
-        $imageName = end($imageName);
-
         return [
             'user_id' => User::factory(),
-            'path' => $imageName
+            'path' => $this->faker->image()
         ];
     }
 }

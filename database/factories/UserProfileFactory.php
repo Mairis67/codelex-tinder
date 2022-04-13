@@ -15,12 +15,12 @@ class UserProfileFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 1,
+            'user_id' => User::factory(),
             'name' => $this->faker->firstName(),
             'surname' => $this->faker->lastName(),
             'age' => $this->faker->numberBetween(18, 100),
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'description' => $this->faker->sentence(),
+            'description' => $this->faker->sentence()
         ];
     }
 }

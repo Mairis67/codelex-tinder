@@ -26,6 +26,9 @@ class WelcomeEmail extends Mailable implements ShouldQueue
     {
         return $this
             ->subject('New Account Created ' . $this->userProfile->name)
-            ->view('emails.welcome-email');
+            ->view('emails.welcome-email', [
+                'user' => $this->user,
+                'userProfile' => $this->userProfile
+            ]);
     }
 }

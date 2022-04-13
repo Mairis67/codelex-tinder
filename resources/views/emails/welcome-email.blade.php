@@ -2,4 +2,4 @@
 
 <p>Thank you for registering</p>
 
-<p>Please add profile picture to complete registration</p>
+<p>{{ $userProfile->name }}</p>

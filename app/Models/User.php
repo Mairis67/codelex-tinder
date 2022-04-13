@@ -12,31 +12,16 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'email',
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -73,7 +58,7 @@ class User extends Authenticatable
     public function dislikes()
     {
         return $this->belongsToMany(User::class, 'dislikes',
-            'user_two', 'auth)_user');
+            'user_two', 'auth_user');
     }
 
     public function match(User $otherUser)
@@ -85,14 +70,46 @@ class User extends Authenticatable
 
         $matchedUser = $this->belongsToMany(User::class, 'matches',
             'user_two', 'auth_user')
-            ->where('auth_two', '=', $this->id)
+            ->where('user_two', '=', $this->id)
             ->where('auth_user', '=', $otherUser->id)->getResults();
 
-        if (isset($userMatched[0]->attributes['id']) && isset($matchedUser[0]->attributes['id'])) {
+        if (isset($userMatched->first()->attributes['id']) && isset($matchedUser->first()->attributes['id'])) {
             return $otherUser;
         } else {
             return null;
         }
+    }
+
+    public function scopeFilterSettings($query, $gender, $id)
+    {
+        return $query->whereHas('profile', function ($query) use ($gender, $id) {
+            $query
+                ->where('gender', $gender)
+                ->where('user_id', '!=', $id);
+        });
+    }
+
+    public function scopeFilterNotSelected($query, $id)
+    {
+        return $query->whereDoesntHave('userLiked', function ($query) use ($id) {
+            $query->where('auth_user', $id);
+        })
+            ->whereDoesntHave('dislikes', function ($query) use ($id) {
+                $query->where('auth_user', $id);
+            });
+    }
+
+    public function scopeMatches($query, $id)
+    {
+        return $query->whereHas('userLiked', function ($query) use ($id) {
+            $query->where('auth_user', $id);
+        })
+            ->whereHas('likedUser', function ($query) use ($id) {
+                $query->where('user_two', $id);
+            })
+            ->whereDoesntHave('dislikes', function ($query) use ($id) {
+                $query->where('auth_user', $id);
+            });
     }
 
 }

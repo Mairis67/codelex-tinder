@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendWelcomeEmailJob;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
 use App\Models\UserPicture;
@@ -79,7 +80,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        Mail::to($user->email)->queue(new WelcomeEmail($user, $userProfile));
+        $this->dispatch(new SendWelcomeEmailJob($user, $userProfile));
 
         return redirect(RouteServiceProvider::HOME);
     }

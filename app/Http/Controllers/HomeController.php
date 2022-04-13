@@ -22,11 +22,12 @@ class HomeController extends Controller
 
         $userSettings = $user->settings;
 
-        $otherUser = $this->generateRandomUser->getUser($userSettings);
+        $otherUser = $this->generateRandomUser->getUser($user, $userSettings);
 
         return view('home', [
             'otherUser' => $otherUser,
             'user' => $user,
         ]);
     }
+
 }
