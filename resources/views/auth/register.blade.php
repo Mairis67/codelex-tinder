@@ -100,7 +100,6 @@
 
                 </div>
             </div>
-
             <!-- Profile Picture -->
 
             <div class="mt-4">

@@ -24,6 +24,12 @@ Route::get('/profile', [ProfileController::class, 'index']);
 Route::get('/profile/upload', [PictureController::class, 'index'])->name('upload');
 Route::post('/profile/upload', [PictureController::class, 'store']);
 
+Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('profile.edit');
+Route::post('/profile/edit', [ProfileController::class, 'updateProfile']);
+
+Route::get('/profile/editSettings', [ProfileController::class, 'editSettings'])->name('profile.editSettings');
+Route::post('/profile/editSettings', [ProfileController::class, 'updateSettings']);
+
 Route::post('profile/like/{id}', [LikeOrDislikeController::class, 'like'])->name('like');
 Route::post('profile/dislike/{id}', [LikeOrDislikeController::class, 'dislike'])->name('dislike');
 

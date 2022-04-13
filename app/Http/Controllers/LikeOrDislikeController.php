@@ -27,7 +27,7 @@ class LikeOrDislikeController extends Controller
         return redirect('/home');
     }
 
-    public function dislike(int $id)
+    public function dislike(int $id): RedirectResponse
     {
         $user = Auth::user();
         $otherUser = User::find($id);

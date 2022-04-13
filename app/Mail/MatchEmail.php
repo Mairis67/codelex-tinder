@@ -19,9 +19,7 @@ class MatchEmail extends Mailable implements ShouldQueue
     public function __construct(User $user, User $otherUser)
     {
         $this->user = $user;
-        $this->userProfile = $user->profile;
         $this->otherUser = $otherUser;
-        $this->otherUserProfile = $otherUser->profile;
     }
 
 
@@ -31,9 +29,9 @@ class MatchEmail extends Mailable implements ShouldQueue
             ->subject('You have a new match')
             ->view('emails.match-email', [
             'user' => $this->user,
-            'userProfile' => $this->userProfile,
+            'userProfile' => $this->user->profile,
             'otherUser' => $this->otherUser,
-            'otherUserProfile' => $this->otherUserProfile
+            'otherUserProfile' => $this->otherUser->profile
         ]);
     }
 }

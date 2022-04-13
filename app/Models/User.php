@@ -82,11 +82,18 @@ class User extends Authenticatable
 
     public function scopeFilterSettings($query, $gender, $id)
     {
-        return $query->whereHas('profile', function ($query) use ($gender, $id) {
-            $query
-                ->where('gender', $gender)
-                ->where('user_id', '!=', $id);
-        });
+        if($gender === 'both') {
+            return $query->whereHas('profile', function ($query) use ($id) {
+                $query
+                    ->where('user_id', '!=', $id);
+            });
+        } else {
+            return $query->whereHas('profile', function ($query) use ($gender, $id) {
+                $query
+                    ->where('gender', $gender)
+                    ->where('user_id', '!=', $id);
+            });
+        }
     }
 
     public function scopeFilterNotSelected($query, $id)

@@ -24,13 +24,19 @@
                     @endif
 
                     @foreach($user->picture->all() as $picture)
-{{--                        <p>{{ $a->path }}</p>--}}
-                        <img src="{{ url('/storage/pictures/' . $picture->path) }}" width="400" height="400"/>
+                        <img class="mt-4" src="{{ url('/storage/pictures/' . $picture->path) }}" width="400" height="400"/>
                     @endforeach
-
 
                     <div class="mt-4">
                         <a class="underline" href="{{ route('upload') }}">Upload Picture</a>
+                    </div>
+
+                    <div class="mt-4">
+                        <a class="underline" href="{{ route('profile.edit') }}">Edit Profile</a>
+                    </div>
+
+                    <div class="mt-4">
+                        <a class="underline" href="{{ route('profile.editSettings') }}">Edit Profile Settings</a>
                     </div>
 
                 </div>
