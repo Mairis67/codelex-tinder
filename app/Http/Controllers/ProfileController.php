@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -24,7 +23,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         return view('profile.edit-profile', [
-            'user' => $user,
+            'user' => $user
         ]);
     }
 
@@ -42,21 +41,15 @@ class ProfileController extends Controller
         $user = Auth::user();
         $userProfile = $user->profile;
 
-        $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255'],
-            'surname' => ['required', 'string', 'min:3', 'max:255'],
-            'age' => ['required', 'int', 'min:18', 'max:100'],
-            'description' => ['required', 'min:10', 'max:500'],
-        ]);
 
         $userProfile->update([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'age' => $request->age,
-            'description' => $request->description,
+            'name' => $request->get('name'),
+            'surname' => $request->get('surname'),
+            'age' => $request->get('age'),
+            'description' => $request->get('description'),
         ]);
 
-        return redirect()->back();
+        return redirect('/profile');
     }
 
     public function updateSettings(Request $request): RedirectResponse
@@ -64,16 +57,11 @@ class ProfileController extends Controller
         $user = Auth::user();
         $userSettings = $user->settings;
 
-        $request->validate([
-            'search_male' => ['required_unless:search_female,1'],
-            'search_female' => ['required_unless:search_male,1']
-        ]);
-
         $userSettings->update([
-            'search_male' => $request->search_male,
-            'search_female' => $request->search_female,
+            'search_male' => $request->get('search_male'),
+            'search_female' => $request->get('search_female')
         ]);
 
-        return redirect()->back();
+        return redirect('/profile');
     }
 }
